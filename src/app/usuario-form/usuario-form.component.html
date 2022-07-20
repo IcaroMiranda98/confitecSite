@@ -1,0 +1,123 @@
+<div
+  class="flex flex-col justify-center p-8 overflow-hidden my-8 mx-20 shadow shadow-slate-500 bg-slate-800"
+  *ngIf="usuario$ | async; let usuario"
+>
+  <div>
+    <h1>{{ isUpdate ? "Alterar Usuario" : "Cadastrar Usuario" }}</h1>
+  </div>
+  <form
+    [formGroup]="form"
+    (ngSubmit)="isUpdate ? atualiza(usuario) : registra(usuario)"
+    class="flex-1 flex flex-col"
+  >
+    <div class="flex-1 flex flex-col gap-2 form-responsive mb-8">
+      <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col max-h-20">
+          <label>Nome</label>
+          <input
+            placeholder="Ícaro"
+            formControlName="Nome"
+            name="Nome"
+            [(ngModel)]="usuario.nome"
+          />
+        </div>
+      </div>
+      <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col max-h-20">
+          <label>Sobrenome</label>
+          <input
+            placeholder="Miranda"
+            formControlName="Sobrenome"
+            name="Sobrenome"
+            [(ngModel)]="usuario.sobrenome"
+          />
+        </div>
+      </div>
+      <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col max-h-20">
+          <label>E-mail</label>
+          <input
+            placeholder="miranda.icarox@gmail.com"
+            formControlName="Email"
+            name="Email"
+            [(ngModel)]="usuario.email"
+          />
+        </div>
+      </div>
+      <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col max-h-20">
+          <label>Data Nascimento</label>
+          <input
+            type="date"
+            placeholder="02/04/1900"
+            formControlName="DataNascimento"
+            name="DataNascimento"
+            [(ngModel)]="usuario.dataNascimento"
+          />
+        </div>
+      </div>
+      <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col max-h-20">
+          <label>Escolaridade</label>
+          <select
+            name="select"
+            formControlName="Escolaridade"
+            [(ngModel)]="usuario.escolaridadeId"
+          >
+            <option name="select"  [value]="0" selected>Selecione uma opção</option>
+            <option name="select" [value]="1">Infantil</option>
+            <option name="select" [value]="2">Fundamental</option>
+            <option name="select" [value]="3">Médio</option>
+            <option name="select" [value]="4">Superior</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col max-h-20 relative">
+          <label>Historico Escolar</label>
+          <input
+            class="w-full overflow-hidden pr-14 text-ellipsis"
+            type="text"
+            formControlName="HistoricoEscolar"
+            placeholder="meu-historico.pdf"
+            readonly
+            [(ngModel)]="usuario.historicoEscolar.nome"
+          />
+          <button
+            type="button"
+            class="absolute right-0 top-5 text-ligth-700 border-0 hover:bg-transparent"
+            type="button"
+            (click)="abrirSeletorDeArquivo()"
+            atTooltipHideDelay="100000"
+            matTooltip="Adicionar Historico Escolar"
+          >
+            <span
+              class="focus:outline-none hover:text-primary-500 material-icons transition-colors"
+              >picture_as_pdf</span
+            >
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row">
+      <div class="flex-1">
+        <button type="reset" *ngIf="!isUpdate">Limpar</button>
+        <a routerLink=""> <button type="button" *ngIf="isUpdate">Cancelar</button></a>
+      </div>
+      <div class="flex-1 flex sm:flex-row-reverse">
+        <button [disabled]="!form.valid" type="submit">
+          {{ isUpdate ? "Alterar" : "Cadastrar" }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<input
+  #inputTypePdf
+  class="hidden focus:outline-none"
+  name="inputTypePdf"
+  type="file"
+  accept="application/pdf"
+/>
