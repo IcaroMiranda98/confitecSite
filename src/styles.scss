@@ -1,4 +1,78 @@
-/* You can add global styles to this file, and also import other style files */
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$confitecSite-primary: mat.define-palette(mat.$indigo-palette);
+$confitecSite-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$confitecSite-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$confitecSite-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $confitecSite-primary,
+      accent: $confitecSite-accent,
+      warn: $confitecSite-warn,
+    ),
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($confitecSite-theme);
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #00985b;
+    --color-secondary: #003a5d;
+    --bg-primary: 0 152 91;
+    --bg-secondary: 0 58 93;
+    --bg-tertiary: 0, 152, 91;
+    --color-teste: #be123c;
+    --text-primary: #ffffff;
+    --text-secondary: #000000;
+    --text-tertiary: #525252;
+  }
+}
+
 body {
-  background-color: rgb(15 23 42 / var(--tw-bg-opacity));
+  @apply bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-500;
+}
+
+input {
+  @apply p-1.5 bg-white  dark:bg-slate-800 rounded border border-slate-500 placeholder:text-slate-700;
+}
+
+select {
+  @apply p-1.5 bg-white  dark:bg-slate-800 rounded border border-slate-500 placeholder:text-slate-700;
+}
+
+button {
+  @apply rounded border border-slate-500 hover:bg-slate-800 bg-slate-900 py-1 px-2;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

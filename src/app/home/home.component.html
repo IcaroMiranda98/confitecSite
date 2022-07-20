@@ -1,0 +1,142 @@
+<div class="flex flex-col justify-center p-20 shadow-sm overflow-hidden my-8">
+  <div class="flex-1 w-full flex justify-end">
+    <button [routerLink]="['../usuario']" type="button" class="flex">
+      <span class="flex-1 focus:outline-none material-icons transition-colors"
+        >add</span
+      >
+      <span class="flex-1 mt-0.5">Adicionar</span>
+    </button>
+  </div>
+  <div class="relative overflow-auto">
+    <div class="shadow-sm overflow-hidden mt-8">
+      <table class="border-collapse table-auto w-full text-sm">
+        <thead>
+          <tr>
+            <th
+              class="border-b dark:border-slate-600 font-medium pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            >
+              Código
+            </th>
+            <th
+              class="border-b dark:border-slate-600 font-medium pt-0 pl-1 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            >
+              Nome
+            </th>
+            <th
+              class="border-b dark:border-slate-600 font-medium pt-0 pl-1 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            >
+              Sobrenome
+            </th>
+            <th
+              class="border-b dark:border-slate-600 font-medium pt-0 pl-1 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            >
+              Email
+            </th>
+            <th
+              class="border-b dark:border-slate-600 font-medium pt-0 pl-1 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            >
+              Data Nascimento
+            </th>
+            <th
+              class="border-b dark:border-slate-600 font-medium pt-0 pl-1 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            >
+              Escolaridade
+            </th>
+            <th
+              class="border-b dark:border-slate-600 font-medium pt-0 pl-1 pb-3 text-slate-400 dark:text-slate-200 text-left"
+            ></th>
+          </tr>
+        </thead>
+        <tbody
+          class="bg-white dark:bg-slate-800"
+          *ngIf="usuarios$ | async; let usuarios"
+        >
+          <tr
+            *ngFor="
+              let usuario of usuarios
+                | paginate: { itemsPerPage: 5, currentPage: paginaAtual };
+              let i = index
+            "
+          >
+            <td
+              class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
+            >
+              {{ usuario.id }}
+            </td>
+            <td
+              class="border-b border-slate-100 dark:border-slate-700 pl-1 text-slate-500 dark:text-slate-400"
+            >
+              {{ usuario.nome }}
+            </td>
+            <td
+              class="border-b border-slate-100 dark:border-slate-700 pl-1 text-slate-500 dark:text-slate-400"
+            >
+              {{ usuario.sobrenome }}
+            </td>
+            <td
+              class="border-b border-slate-100 dark:border-slate-700 pl-1 text-slate-500 dark:text-slate-400"
+            >
+              {{ usuario.email }}
+            </td>
+            <td
+              class="border-b border-slate-100 dark:border-slate-700 pl-1 text-slate-500 dark:text-slate-400"
+            >
+              {{ usuario.dataNascimento | date:'dd/MM/YYYY'}}
+            </td>
+            <td
+              class="border-b border-slate-100 dark:border-slate-700 pl-1 pt-3 text-slate-500 dark:text-slate-400"
+            >
+              <container-element [ngSwitch]="usuario.escolaridadeId">
+                <p *ngSwitchCase="1">Infantil</p>
+                <p *ngSwitchCase="2">Fundamental</p>
+                <p *ngSwitchCase="3">Médio</p>
+                <p *ngSwitchCase="4">Superior</p>
+              </container-element>
+            </td>
+            <td
+              class="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"
+            >
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                class="border-0 bg-transparent"
+              >
+                <mat-icon>menu</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button
+                  mat-menu-item
+                  [routerLink]="['/usuario']"
+                  [queryParams]="{ id: usuario.id }"
+                >
+                  <mat-icon>edit</mat-icon>
+                  <span>Alterar</span>
+                </button>
+                <button mat-menu-item (click)="excluiUsuario(usuarios, i)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Excluir</span>
+                </button>
+                <button
+                  mat-menu-item
+                  (click)="baixarHistorico(usuario.historicoEscolar)"
+                >
+                  <mat-icon>download</mat-icon>
+                  <span>Historico Escolar</span>
+                </button>
+              </mat-menu>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="flex justify-center bg-white dark:bg-slate-800 rounded-b-xl p-1">
+    <pagination-controls
+      previousLabel="Anterior"
+      nextLabel="Próximo"
+      class="my-pagination"
+      (pageChange)="paginaAtual = $event"
+    >
+    </pagination-controls>
+  </div>
+</div>
